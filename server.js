@@ -17,7 +17,7 @@ const app = express();
 
 // Middleware
 app.use(cors({ 
-  origin: ['http://localhost:5173', 'https://cofeshopbandung.netlify.app'], 
+  origin: ['http://localhost:5173', 'https://cofeshopbandung.netlify.app', 'https://bf49e17dba14.ngrok-free.app'], 
   credentials: true 
 }));
 app.use(express.json());

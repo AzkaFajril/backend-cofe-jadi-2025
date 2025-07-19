@@ -10,10 +10,29 @@ exports.createOrder = async (req, res) => {
     if (!paymentMethod) return res.status(400).json({ success: false, message: 'paymentMethod is required' });
     if (!totalPayment) return res.status(400).json({ success: false, message: 'totalPayment is required' });
 
+    // Mapping ulang items: ambil harga dari Product berdasarkan productId dan size
+    const itemsWithPrice = await Promise.all(items.map(async (item) => {
+      // Cari produk asli berdasarkan _id atau id
+      const product = await Product.findOne({ $or: [{ _id: item.productId }, { id: item.productId }] });
+      let price = product?.price;
+      let foundSize = null;
+      if (product?.sizes && item.size) {
+        foundSize = product.sizes.find((s) => s.name.toLowerCase() === item.size.toLowerCase());
+        price = foundSize ? foundSize.price : product.price;
+      }
+      // Log debug
+      console.log('DEBUG ORDER ITEM:', { item, productId: item.productId, foundProduct: !!product, foundSize, price });
+      return {
+        ...item,
+        price: price ?? 0,
+      };
+    }));
+
     const crypto = require('crypto');
     const orderId = crypto.randomBytes(3).toString('hex');
     const order = new Order({
       ...req.body,
+      items: itemsWithPrice,
       orderId,
     });
     await order.save();
