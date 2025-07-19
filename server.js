@@ -30,7 +30,7 @@ app.use('/auth', authRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/admin', adminRoutes);
 app.use('/payment', paymentRoutes);
-app.use('/payment', paymentRoutes);
+app.use('/api/payment', paymentRoutes);
 app.use('/upload', uploadRoutes);
 app.use('/cart', cartRoutes);
 app.use('/products', productRoutes);

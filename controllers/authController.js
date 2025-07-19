@@ -53,3 +53,18 @@ exports.getUserById = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+exports.updateUserProfile = async (req, res) => {
+  try {
+    const { userId, name, phone } = req.body;
+    if (!userId) return res.status(400).json({ error: 'userId is required' });
+    const update = {};
+    if (name) update.name = name;
+    if (phone) update.phone = phone;
+    const user = await User.findByIdAndUpdate(userId, update, { new: true });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json(user);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};

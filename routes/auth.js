@@ -5,8 +5,7 @@ const jwt = require('jsonwebtoken');
 const fetch = require('node-fetch');
 const adminEmails = require('../config/admins');
 const auth = require('../Middleware/auth'); // Added auth middleware
-const { updateUserAddress } = require('../controllers/authController');
-const { getUserById } = require('../controllers/authController');
+const { updateUserAddress, getUserById, updateUserProfile } = require('../controllers/authController');
 
 router.post('/google', async (req, res) => {
   try {
@@ -79,5 +78,6 @@ router.get('/me', auth, (req, res) => {
 
 router.put('/users/:userId/address', updateUserAddress);
 router.get('/users/:userId', getUserById); // untuk fetch address saat login
+router.post('/update-profile', updateUserProfile);
 
 module.exports = router; 

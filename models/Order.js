@@ -16,6 +16,7 @@ const OrderSchema = new mongoose.Schema({
   customer: {
     id: String,
     name: String,
+    phone: String, // <-- tambahkan ini
     address: String, // alamat pengiriman untuk delivery
     coordinates: {
       lat: Number,
