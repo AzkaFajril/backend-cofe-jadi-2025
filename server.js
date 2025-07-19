@@ -9,14 +9,17 @@ const adminRoutes = require('./routes/admin');
 const paymentRoutes = require('./routes/payment');
 const uploadRoutes = require('./routes/upload');
 const cartRoutes = require('./routes/cart');
-const productRoutes = require('./routes/product');
+const productRoutes = require('./routes/Product');
 const inplaceOrderRoutes = require('./routes/inplaceOrder');
 const orderRoutes = require('./routes/order');
 const addressRoutes = require('./routes/address');
 const app = express();
 
 // Middleware
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
+app.use(cors({ 
+  origin: ['http://localhost:5173', 'https://cofeshopbandung.netlify.app'], 
+  credentials: true 
+}));
 app.use(express.json());
 
 mongoose.connect(process.env.MONGODB_URI)
