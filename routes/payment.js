@@ -17,11 +17,11 @@ router.post('/midtrans-token', async (req, res) => {
     });
 
     // Parameter transaksi
-    const parameter = {
-      transaction_details: {
-        order_id: orderId,
-        gross_amount: grossAmount,
-      },
+  const parameter = {
+    transaction_details: {
+      order_id: orderId,
+      gross_amount: grossAmount,
+    },
       customer_details: customer,
       callbacks: {
         finish: finish_redirect_url || 'https://cofeshopbandung.netlify.app/payment-success'

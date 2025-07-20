@@ -11,4 +11,4 @@ PORT=5000
 
 MIDTRANS_SERVER_KEY=
 MIDTRANS_CLIENT_KEY=
-https://serverc.up.railway.app
+http://localhost:5000

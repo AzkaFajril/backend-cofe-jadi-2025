@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-const crypto = require('crypto'); // import di atas file
 
 const OrderItemSchema = new mongoose.Schema({
   productId: String,
@@ -10,13 +9,13 @@ const OrderItemSchema = new mongoose.Schema({
 });
 
 const OrderSchema = new mongoose.Schema({
-  userId: { type: String, required: true }, // <-- Tambahkan ini
+  userId: { type: String, required: true },
   orderId: { type: String, required: true, unique: true },
   tableNumber: String, // untuk in place
   customer: {
     id: String,
     name: String,
-    phone: String, // <-- tambahkan ini
+    phone: String,
     address: String, // alamat pengiriman untuk delivery
     coordinates: {
       lat: Number,
@@ -25,9 +24,11 @@ const OrderSchema = new mongoose.Schema({
   },
   items: [OrderItemSchema],
   deliOption: String, // 'in-place', 'delivery', 'pick-up'
+  deliveryType: String, // 'in-place', 'delivery', 'pickup'
   paymentMethod: String,
   totalPayment: Number,
-  date: String,
+  totalAmount: Number, // alias untuk totalPayment
+  date: { type: Date, default: Date.now },
   image: String,
   orderType: String, // 'IN_PLACE', 'DELIVER', 'PICK_UP'
   status: {
@@ -35,26 +36,19 @@ const OrderSchema = new mongoose.Schema({
     enum: ['pending', 'processing', 'completed', 'cancelled'],
     default: 'pending'
   },
+  paymentStatus: {
+    type: String,
+    enum: ['unpaid', 'paid'],
+    default: 'unpaid'
+  },
+  statusPesanan: {
+    type: String,
+    enum: ['belum_dikirim', 'sedang_diproses', 'sudah_dikirim', 'dibatalkan'],
+    default: 'belum_dikirim'
+  },
+  address: String, // alamat pengiriman
+}, {
+  timestamps: true // menambahkan createdAt dan updatedAt
 });
 
 module.exports = mongoose.model('Order', OrderSchema);
-
-exports.createOrder = async (req, res) => {
-  try {
-    // ...proses lain...
-
-    // Generate orderId pendek (6 karakter hex)
-    const orderId = crypto.randomBytes(3).toString('hex'); // hasil: 'a1b2c3'
-
-    // Buat order baru
-    const order = new Order({
-      ...req.body,
-      orderId, // simpan orderId pendek
-    });
-
-    await order.save();
-    res.status(201).json({ success: true, order });
-  } catch (err) {
-    res.status(400).json({ success: false, message: err.message });
-  }
-};
